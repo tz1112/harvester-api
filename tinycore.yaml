@@ -1,0 +1,199 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  annotations:
+    harvesterhci.io/vmRunStrategy: RerunOnFailure
+    harvesterhci.io/volumeClaimTemplates: >-
+      [{"metadata":{"name":"tinycore-cdrom-disk-p2la9","annotations":{"harvesterhci.io/imageId":"default/image-4l8rz"}},"spec":{"accessModes":["ReadWriteMany"],"resources":{"requests":{"storage":"1Gi"}},"volumeMode":"Block","storageClassName":"longhorn-image-4l8rz"}}]
+    kubevirt.io/latest-observed-api-version: v1
+    kubevirt.io/storage-observed-api-version: v1
+    network.harvesterhci.io/ips: '[]'
+  creationTimestamp: '2025-01-11T18:48:01Z'
+  finalizers:
+    - kubevirt.io/virtualMachineControllerFinalize
+    - wrangler.cattle.io/VMController.CleanupPVCAndSnapshot
+  generation: 2
+  labels:
+    harvesterhci.io/creator: harvester
+  managedFields:
+    - apiVersion: kubevirt.io/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            f:kubevirt.io/latest-observed-api-version: {}
+            f:kubevirt.io/storage-observed-api-version: {}
+          f:finalizers:
+            .: {}
+            v:"kubevirt.io/virtualMachineControllerFinalize": {}
+      manager: virt-controller
+      operation: Update
+      time: '2025-01-11T18:48:01Z'
+    - apiVersion: kubevirt.io/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:harvesterhci.io/vmRunStrategy: {}
+            f:harvesterhci.io/volumeClaimTemplates: {}
+            f:network.harvesterhci.io/ips: {}
+          f:finalizers:
+            v:"wrangler.cattle.io/VMController.CleanupPVCAndSnapshot": {}
+          f:labels:
+            .: {}
+            f:harvesterhci.io/creator: {}
+        f:spec:
+          .: {}
+          f:runStrategy: {}
+          f:template:
+            .: {}
+            f:metadata:
+              .: {}
+              f:annotations:
+                .: {}
+                f:harvesterhci.io/sshNames: {}
+              f:creationTimestamp: {}
+              f:labels:
+                .: {}
+                f:harvesterhci.io/vmName: {}
+            f:spec:
+              .: {}
+              f:accessCredentials: {}
+              f:domain:
+                .: {}
+                f:cpu:
+                  .: {}
+                  f:cores: {}
+                f:devices:
+                  .: {}
+                  f:disks: {}
+                  f:interfaces: {}
+                f:features:
+                  .: {}
+                  f:acpi:
+                    .: {}
+                    f:enabled: {}
+                f:machine: {}
+                f:resources:
+                  .: {}
+                  f:limits:
+                    .: {}
+                    f:cpu: {}
+                    f:memory: {}
+              f:evictionStrategy: {}
+              f:hostname: {}
+              f:networks: {}
+              f:terminationGracePeriodSeconds: {}
+              f:volumes: {}
+      manager: harvester
+      operation: Update
+      time: '2025-01-11T18:48:22Z'
+    - apiVersion: kubevirt.io/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:status:
+          .: {}
+          f:conditions: {}
+          f:created: {}
+          f:desiredGeneration: {}
+          f:observedGeneration: {}
+          f:printableStatus: {}
+          f:ready: {}
+          f:runStrategy: {}
+          f:volumeSnapshotStatuses: {}
+      manager: virt-controller
+      operation: Update
+      subresource: status
+      time: '2025-01-11T18:48:23Z'
+  name: tinycore
+  namespace: default
+  resourceVersion: '16590748'
+  uid: f670cc60-2f6d-44db-9455-c26b63383e62
+spec:
+  runStrategy: RerunOnFailure
+  template:
+    metadata:
+      annotations:
+        harvesterhci.io/sshNames: '[]'
+      creationTimestamp: null
+      labels:
+        harvesterhci.io/vmName: tinycore
+    spec:
+      affinity: {}
+      architecture: amd64
+      domain:
+        cpu:
+          cores: 1
+        devices:
+          disks:
+            - bootOrder: 1
+              cdrom:
+                bus: sata
+              name: cdrom-disk
+            - disk:
+                bus: virtio
+              name: cloudinitdisk
+          interfaces:
+            - macAddress: 6e:8f:65:30:43:22
+              masquerade: {}
+              model: virtio
+              name: default
+        features:
+          acpi:
+            enabled: true
+        machine:
+          type: q35
+        memory:
+          guest: 4Gi
+        resources:
+          limits:
+            cpu: '1'
+            memory: 4Gi
+          requests:
+            cpu: 62m
+            memory: 2730Mi
+      evictionStrategy: LiveMigrateIfPossible
+      hostname: tinycore
+      networks:
+        - name: default
+          pod: {}
+      terminationGracePeriodSeconds: 120
+      volumes:
+        - name: cdrom-disk
+          persistentVolumeClaim:
+            claimName: tinycore-cdrom-disk-p2la9
+        - cloudInitNoCloud:
+            networkDataSecretRef:
+              name: tinycore-dymxi
+            secretRef:
+              name: tinycore-dymxi
+          name: cloudinitdisk
+status:
+  conditions:
+    - lastProbeTime: null
+      lastTransitionTime: '2025-01-11T18:48:20Z'
+      status: 'True'
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: null
+      status: 'True'
+      type: LiveMigratable
+    - lastProbeTime: null
+      lastTransitionTime: '2025-01-11T18:48:22Z'
+      message: a non-live-updatable field was changed in the template spec
+      status: 'True'
+      type: RestartRequired
+  created: true
+  desiredGeneration: 2
+  observedGeneration: 2
+  printableStatus: Running
+  ready: true
+  runStrategy: RerunOnFailure
+  volumeSnapshotStatuses:
+    - enabled: false
+      name: cdrom-disk
+      reason: 2 matching VolumeSnapshotClasses for longhorn-image-4l8rz
+    - enabled: false
+      name: cloudinitdisk
+      reason: Snapshot is not supported for this volumeSource type [cloudinitdisk]
